@@ -1,0 +1,19 @@
+{
+  "name": "ttne-data-platform-devices",
+  "version": "1.0.0",
+  "description": "Devices processor TTN Enschede data platform",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js | bunyan -o short",
+    "test": "node_modules/.bin/mocha"
+  },
+  "author": "Timothy Sealy",
+  "license": "MIT",
+  "dependencies": {
+    "jsonschema": "^1.1.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.1",
+    "mqtt": "^2.11.0"
+  },
+  "devDependencies": {}
+}
