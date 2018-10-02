@@ -20,12 +20,12 @@ if (config.mqtt.enabled) {
         log.info('Connecting to mqtt broker %s .', config.mqtt.broker_url);
     });
 
-    // mqtt_client.on('message', function (topic, message) {
-    //     log.info('* Received message op topic ', topic);
-    //
-    //     // Process ingest message.
-    //     processor.process_ingest_message(JSON.parse(message.toString()));
-    // })
+    mqtt_client.on('message', function (topic, message) {
+        log.info('* Received message op topic ', topic);
+    
+        // Process ingest message.
+        processor.process_ingest_message(JSON.parse(message.toString()));
+    })
 
     mqtt_client.on('offline', function () {
         log.info('Disconnected to mqtt broker %s .', config.mqtt.broker_url);
