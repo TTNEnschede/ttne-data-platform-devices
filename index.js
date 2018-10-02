@@ -25,7 +25,10 @@ if (config.mqtt.enabled) {
     global.mqtt_client = mqtt.connect(config.mqtt.broker_url);
 
     mqtt_client.on('connect', function () {
-        log.info('Connecting to mqtt broker %s .', config.mqtt.broker_url);
+        log.info('Connecting to mqtt broker %s', config.mqtt.broker_url);
+
+        // Subscribe to topic.
+        mqtt_client.subscribe(config.mqtt.ingest_topic, { qos: 1 });
     });
 
     mqtt_client.on('message', function (topic, message) {
@@ -36,7 +39,7 @@ if (config.mqtt.enabled) {
     })
 
     mqtt_client.on('offline', function () {
-        log.info('Disconnected to mqtt broker %s .', config.mqtt.broker_url);
+        log.info('Disconnected to mqtt broker %s', config.mqtt.broker_url);
     });
 
     mqtt_client.on('error', function (error) {
