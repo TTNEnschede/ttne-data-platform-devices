@@ -12,6 +12,14 @@ const devicesRouter = require('./routes/devices');
 // Create logger.
 global.log = new bunyan({name: config.name});
 
+// Create log file if needed
+if (config.log.enabled) {
+  global.log.addStream({
+    name: config.name,
+    path: config.log.path
+  });
+}
+
 // Create MQTT client if needed
 if (config.mqtt.enabled) {
     global.mqtt_client = mqtt.connect(config.mqtt.broker_url);
@@ -22,7 +30,7 @@ if (config.mqtt.enabled) {
 
     mqtt_client.on('message', function (topic, message) {
         log.info('* Received message op topic ', topic);
-    
+
         // Process ingest message.
         processor.process_ingest_message(JSON.parse(message.toString()));
     })
