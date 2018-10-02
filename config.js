@@ -4,13 +4,18 @@ module.exports = {
     name: 'ttne-data-platform',
     version: '1.0.0',
     env: process.env.NODE_ENV || 'development',
-    port: process.env.PORT || 3002,
-    base_url: process.env.BASE_URL || 'http://localhost:3002',
-    mqtt_broker_url: process.env.MQTT_BROKER || 'mqtt://localhost',
-    mqtt_client_id: process.env.MQTT_CLIENT_ID || 'ttne-processor-client',
-    mqtt_ingest_topic: process.env.MQTT_INGEST_TOPIC || 'ingest',
-    mqtt_payload_topic: process.env.MQTT_PAYLOAD_TOPIC || '/devices/%s/payload',
+    service: {
+        port: process.env.DEVICES_SERVICE_PORT || 3002,
+        base_url: process.env.DEVICES_SERVICE_BASE_URL || 'http://localhost'
+    },
     db: {
-        uri: 'mongodb://127.0.0.1:27017/ttne_data'
+        uri: process.env.DEVICES_DB_URI || 'mongodb://127.0.0.1:27017/ttne_data'
+    },
+    mqtt: {
+        enabled: process.env.DEVICES_MQTT_ENABLED || false,
+        broker_url: process.env.DEVICES_MQTT_BROKER_URL || 'mqtt://localhost',
+        ingest_topic: process.env.INGEST_MQTT_INGEST_TOPIC || 'ingest',
+        mqtt_payload_topic: process.env.MQTT_PAYLOAD_TOPIC || '/devices/%s/payload',
+        qos: process.env.DEVICES_MQTT_QOS || 1
     }
 }

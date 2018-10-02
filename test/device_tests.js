@@ -4,7 +4,7 @@ const config    = require('./../config');
 const mongoose  = require('mongoose');
 const supertest = require('supertest');
 const should    = require('should');
-const server    = supertest.agent(config.base_url);
+const server    = supertest.agent(config.service.base_url + ":" + config.service.port);
 
 const testdata  = require('./test_data.js');
 
@@ -37,7 +37,7 @@ describe("* Device test",function () {
     after(function (done) {
         // After test execution
         console.log('Tear down test environment.');
-        
+
         // Connect to the database
         mongoose.Promise = require('bluebird');
         mongoose.connect(config.db.uri, { useMongoClient: true });
@@ -113,7 +113,7 @@ describe("* Device test",function () {
                 devices[0].location.should.be.eql([52.1977283, 6.8562263]);
                 should.not.exist(devices[0].type);
                 should.not.exist(devices[0].geometry);
-                
+
                 done();
             });
     });
