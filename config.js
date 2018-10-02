@@ -4,9 +4,9 @@ module.exports = {
     name: 'ttne-data-platform',
     version: '1.0.0',
     env: process.env.NODE_ENV || 'development',
-    log {
+    log: {
       enabled: process.env.DEVICES_LOGFILE_ENABLED || false,
-      path: enabled: process.env.DEVICES_MQTT_ENABLED || '/tmp/ttne-data-platform.log',
+      path: process.env.DEVICES_MQTT_ENABLED || '/tmp/ttne-data-platform.log'
     },
     service: {
         port: process.env.DEVICES_SERVICE_PORT || 3002,
