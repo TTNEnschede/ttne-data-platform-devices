@@ -1,5 +1,5 @@
 const errors = require('restify-errors');
-const Router = require('restify-router').Router;  
+const Router = require('restify-router').Router;
 const router = new Router();
 
 var Device = require('./../models/Device');
@@ -7,12 +7,12 @@ var Device = require('./../models/Device');
 /**
  * @api {get} /api/devices List devices
  * @apiVersion 1.0.0
- * @apiParam {Number} [limit=10] A limit on the amount of results returned. 
- * @apiParam {Number} [longitude] The longitude for a location based query. Must be used in combination with <i>latitude</i> and <i>radius</i>. 
+ * @apiParam {Number} [limit=10] A limit on the amount of results returned.
+ * @apiParam {Number} [longitude] The longitude for a location based query. Must be used in combination with <i>latitude</i> and <i>radius</i>.
  * @apiParam {Number} [latitude] The latitude for a location based query. Must be used in combination with <i>longitude</i> and <i>radius</i>.
- * @apiParam {Number} [radius=10] The radius in kilometers used to perform the location based query. 
+ * @apiParam {Number} [radius=10] The radius in kilometers used to perform the location based query.
  * Should only be used with the parameters <i>longitude</i> and <i>latitude</i>.
- * @apiParam [geojson] Format the location information of the returned results according to the GeoJSON format. 
+ * @apiParam [geojson] Format the location information of the returned results according to the GeoJSON format.
  *
  * @apiHeader {String} apikey An access-key.
  * @apiDescription With this api end point the devices can be queried.
@@ -42,11 +42,11 @@ var Device = require('./../models/Device');
  *    HTTP/1.1 500 Internal Server Error
  *    HTTP/1.1 400 Bad Request
  */
-router.get('/devices', function (req, res, next) { 
+router.get('/devices', function (req, res, next) {
 
     // Limit the maximum amount of results.
     var limit = parseInt(req.query.limit) || 10;
-    
+
     // Query fields and filters.
     var where = {};
     var fields = {
@@ -59,6 +59,7 @@ router.get('/devices', function (req, res, next) {
     if (req.query.geojson !== undefined) {
         fields.type = true;
         fields.geometry = true;
+        fields.properties = true;
     } else {
         fields.location = true;
     }
@@ -83,7 +84,7 @@ router.get('/devices', function (req, res, next) {
         // to radians (raduis of Earth is approximately 6378.1 kilometers).
         var radius = req.query.distance || 10;
         radius /= 6378.1;
-    
+
         // Set query filter.
         where.location = { $geoWithin: { $centerSphere: [ coords , radius ] } };
     }
@@ -96,9 +97,17 @@ router.get('/devices', function (req, res, next) {
 	            log.error(err);
 	            return next(new errors.InternalError('Error querying devices.'));
 	        }
-
-	        res.send({ devices: deviceDocs });
-	        next();
+          // Format response either as a collection of devices
+          // or a GeoJSON FeatureCollection.
+          var responseBody = { devices: deviceDocs };
+          if (req.query.geojson !== undefined) {
+            responseBody = {
+              type: 'FeatureCollection',
+              features: deviceDocs
+            }
+          }
+	        res.send(responseBody);
+          next();
     });
 
 });

@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var deviceSchema = new Schema({
-	// Owner api key.
+  // Owner api key.
     api_key: { type: String, required: true },
-	// Application id.
+    // Application id.
     application_id: { type: String, required: true },
     // Device's id.
     device_id: { type: String, required: true },
@@ -17,11 +17,15 @@ var deviceSchema = new Schema({
     geometry: {
         type: { type: String, default: 'Point' },
         coordinates: {type: [Number], index: '2dsphere'}
+    },
+    // Properties are required for GeoJSON (store the device id here).
+    properties: {
+      name: { type: String, required: true }
     }
 },
-{ 
+{
 	// Timestamping on create and update.
-	timestamps: { createdAt: 'created_on', updatedAt: 'updated_on' } 
-});
+	timestamps: { createdAt: 'created_on', updatedAt: 'updated_on' }
+})
 
-module.exports = mongoose.model("Device", deviceSchema);
+module.exports = mongoose.model("Device", deviceSchema)

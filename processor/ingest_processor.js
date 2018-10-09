@@ -17,8 +17,7 @@ module.exports.process_ingest_message = function(ingest) {
             return;
         }
 
-        // This is a new device.
-        // Let's add it to the database.
+        // This is a new device. Let's add it to the database.
         if (!device) {
             // Create new device
             var newDevice = new Device({
@@ -39,6 +38,7 @@ module.exports.process_ingest_message = function(ingest) {
                 newDevice.geometry = {};
                 newDevice.geometry.type = 'Point';
                 newDevice.geometry.coordinates = [ingest.payload.metadata.longitude, ingest.payload.metadata.latitude];
+                newDevice.properties.name = ingest.payload.dev_id;
             }
 
             // Save it.
