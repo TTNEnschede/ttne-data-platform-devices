@@ -11,3 +11,6 @@ Start the service using npm start:
 
 # Configuration
 See config.js for configuration parameters.
+
+Application supports dotenv. Add environment variables in a '.env' file in the root folder and they will be
+picked up by the application.

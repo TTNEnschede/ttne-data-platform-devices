@@ -1,5 +1,6 @@
 'use strict'
 
+const dotenv_config = require('dotenv').config()
 const config        = require('./config');
 const restify       = require('restify');
 const bunyan        = require('bunyan');
