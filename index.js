@@ -6,8 +6,9 @@ const bunyan        = require('bunyan');
 const mongoose      = require('mongoose');
 const mqtt          = require('mqtt');
 
-const processor     = require('./processor/ingest_processor');
-const devicesRouter = require('./routes/devices');
+const processor       = require('./processor/ingest_processor')
+const devicesRouter   = require('./routes/devices')
+const internalRouter  = require('./routes/internal')
 
 // Create logger.
 global.log = new bunyan({name: config.name});
@@ -104,6 +105,7 @@ server.listen(config.service.port, function() {
 
         // Apply available routes.
         devicesRouter.applyRoutes(server, '/api');
+        internalRouter.applyRoutes(server, '/internal');
 
         // Set the home route.
         server.get('/', function(req, res, next) {
