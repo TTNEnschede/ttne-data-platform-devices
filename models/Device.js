@@ -20,7 +20,7 @@ var deviceSchema = new Schema({
     },
     // Properties are required for GeoJSON (store the device id here).
     properties: {
-      name: { type: String, required: true }
+      name: { type: String }
     }
 },
 {
